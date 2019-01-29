@@ -290,23 +290,89 @@ namespace Fakturisanje.Controllers
         // GET: Home/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var fakturaDelete = (from f in _db.FakturaTables
+
+                                 where f.fakturaID == id
+
+                                 select f).First();
+
+            return View(fakturaDelete);
         }
 
-        // POST: Home/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
+        // POST: Home/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var fakturaDelete = (from f in _db.FakturaTables
+
+                                 where f.fakturaID == id
+
+                                 select f).First();
+
+            //obrisi sve stavke fakture
+            var listaStavkiFakture = fakturaDelete.StavkaFaktureTables.ToList();
+            listaStavkiFakture.ForEach(x => _db.StavkaFaktureTables.Remove(x));
+
+            //obrisi fakturu
+            _db.FakturaTables.Remove(_db.FakturaTables.Single(f => f.fakturaID == fakturaDelete.fakturaID));
+
+            _db.SaveChanges();
+
+            if (!ModelState.IsValid)
+
+                return View(fakturaDelete);
+
+            return RedirectToAction("Index");
+
+        }
+
+        // GET: Home/DeleteStavka/5
+        public ActionResult DeleteStavka(int id)
+        {
+            var stavkaFaktureDelete = (from f in _db.StavkaFaktureTables
+
+                                 where f.redniBr == id
+
+                                 select f).First();
+
+            return View(stavkaFaktureDelete);
+        }
+
+        // POST: Home/DeleteStavka/5
+        [HttpPost, ActionName("DeleteStavka")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteStavkaConfirmed(int id)
+        {
+
+            var stavkaDelete = (from f in _db.StavkaFaktureTables
+
+                                       where f.redniBr == id
+
+                                       select f).First();
+
+            var faktura = _db.FakturaTables.Find(stavkaDelete.fakturaID);
+
+            var result = _db.FakturaTables.SingleOrDefault(f => f.fakturaID == faktura.fakturaID);
+ 
+            if (result != null)
             {
-                return View();
+                result.ukupno_stavki = faktura.StavkaFaktureTables.Count - 1;
+                _db.SaveChanges();
             }
+
+            faktura.StavkaFaktureTables.Remove(stavkaDelete);
+
+            _db.StavkaFaktureTables.Remove(_db.StavkaFaktureTables.Single(f => f.redniBr == stavkaDelete.redniBr));
+            _db.SaveChanges();
+
+            if (!ModelState.IsValid)
+
+                return View(stavkaDelete);
+
+            return RedirectToAction("Index");
+          
         }
     }
 }

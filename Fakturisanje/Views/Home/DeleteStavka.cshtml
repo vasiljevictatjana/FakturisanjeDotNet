@@ -1,0 +1,49 @@
+﻿@model Fakturisanje.Models.StavkaFaktureTable
+
+@{
+    ViewBag.Title = "DeleteStavka";
+}
+
+<h2>Brisanje stavke fakture</h2>
+
+<h3>Da li zelis da obrises stavku fakture?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.kolicina)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.kolicina)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cena)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cena)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ukupno)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ukupno)
+        </dd>
+
+        
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Obrisi stavku" class="btn btn-default" /> |
+            @Html.ActionLink("Nazad na listu", "Index")
+        </div>
+    }
+</div>

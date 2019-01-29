@@ -1,0 +1,71 @@
+﻿@model Fakturisanje.Models.FakturaTable
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Brisanje fakture i svih njenih stavki</h2>
+
+<h3>Da li zelis da obrises fakturu sa svim njenim stavkama?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.datum_fakture)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datum_fakture)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.broj_fakture)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.broj_fakture)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ukupno)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ukupno)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.datum_dokumenta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datum_dokumenta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.broj_dokumenta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.broj_dokumenta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ukupno_stavki)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ukupno_stavki)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Obrisi fakturu" class="btn btn-default" /> |
+            @Html.ActionLink("Nazad na listu", "Index")
+        </div>
+    }
+</div>
