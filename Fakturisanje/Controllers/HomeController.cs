@@ -22,18 +22,6 @@ namespace Fakturisanje.Controllers
             return View(_db.FakturaTables.ToList());
         }
 
-        // GET: Home/
-        //public ActionResult IndexStavke(int id)
-        //{
-        //    var faktura = (from f in _db.FakturaTables
-
-        //                    where f.fakturaID == id
-
-        //                    select f).First();
-
-        //    return View(faktura.StavkaFaktureTables.ToList());
-        //}
-
         // GET: Home/Details/5
         public ActionResult Details(int id)
         {
@@ -64,13 +52,14 @@ namespace Fakturisanje.Controllers
             int faktureIDmax = 0;
             string sql = "";
 
+            //broj redova u tabeli Faktura
             string sqlCount = @"SELECT COUNT(*) FROM FakturaTable";
             int count = _db.Database.SqlQuery<int>(sqlCount).Single();
 
 
             if (count != 0)
             {
-                sql = @"SELECT MAX(fakturaID) FROM FakturaTable"; // finish your query here
+                sql = @"SELECT MAX(fakturaID) FROM FakturaTable"; 
                 faktureIDmax = _db.Database.SqlQuery<int>(sql).Single();
                 faktureID = faktureIDmax + 1;
             }
@@ -111,7 +100,7 @@ namespace Fakturisanje.Controllers
             int redniBrmax = 0;
             string sqlMax = "";
             
-
+            //broj redova u tabeli Stavke
             string sqlCount = @"SELECT COUNT(*) FROM StavkaFaktureTable"; 
             int count = _db.Database.SqlQuery<int>(sqlCount).Single();
 
@@ -119,7 +108,7 @@ namespace Fakturisanje.Controllers
             {
                 sqlMax = @"SELECT MAX(redniBr) FROM StavkaFaktureTable";
                 redniBrmax = _db.Database.SqlQuery<int>(sqlMax).Single();
-                redniBr = redniBrmax + 1;
+                redniBr = redniBrmax + 1; //redni broj postavljano za 1 veci od max rednog broja u tabeli
             }
 
             _db.StavkaFaktureTables.Add( new StavkaFaktureTable
@@ -133,30 +122,9 @@ namespace Fakturisanje.Controllers
 
             _db.SaveChanges();
 
+            //kada se doda nova stavka treba vrednost ukupno_stavki u tabeli Faktura da promenimo i da dodamo tu stavku u listuStavki
             int countSF = 0;
-            //string sqlCountStavkeFakture = "SELECT COUNT(*) FROM StavkaFaktureTables where fakturaID = {0}";
-
-            //string esqlQuery = @"SELECT COUNT(*) FROM StavkaFaktureTables where fakturaID = @id";
-
-            //using (EntityCommand cmd = new EntityCommand(esqlQuery))
-            //{
-            //    // Create one parameter and add them to 
-            //    // the EntityCommand's Parameters collection 
-            //    EntityParameter param1 = new EntityParameter();
-            //    param1.ParameterName = "id";
-            //    param1.Value = ID;
-
-            //    cmd.Parameters.Add(param1);
-
-            //    using (EntityDataReader rdr = cmd.ExecuteReader(CommandBehavior.SequentialAccess, FaktureDBEntities))
-            //    {
-            //        while (rdr.Read())
-            //        {
-            //            countSF = rdr.GetInt32(0);
-
-            //        }
-            //    }
-            //}
+           
             string esqlQuery = "";
             int counter = 0;
 
@@ -168,8 +136,7 @@ namespace Fakturisanje.Controllers
 
                 using (EntityCommand cmd = new EntityCommand(esqlQuery, conn))
                 {
-                    // Create one parameter and add them to 
-                    // the EntityCommand's Parameters collection 
+                    //kreiramo parametar za parametarski upit
                     EntityParameter param1 = new EntityParameter();
                     param1.ParameterName = "id";
                     param1.Value = ID;
@@ -181,11 +148,9 @@ namespace Fakturisanje.Controllers
                     {
                         while (rdr.Read())
                         {
-                            //get rows
+                            //broj redova u tabeli Stavki za dati fakturaID
                             counter++;
                         }
-                        //IExtendedDataRecord rdfdata = rdr as IExtendedDataRecord;
-                        //countSF = rdfdata.DataRecordInfo.FieldMetadata.Count;
 
                     }
                 }
@@ -195,8 +160,6 @@ namespace Fakturisanje.Controllers
             countSF = counter;
 
             var faktura = _db.FakturaTables.Find(ID);
-
-            //faktura.StavkaFaktureTables.Add(newStavkaFakture);
 
             var result = _db.FakturaTables.SingleOrDefault(f => f.fakturaID == faktura.fakturaID);
 
