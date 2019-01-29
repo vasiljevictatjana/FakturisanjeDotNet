@@ -206,7 +206,7 @@ namespace Fakturisanje.Controllers
                 result.datum_fakture = fakturaEdit.datum_fakture;
                 result.broj_fakture = fakturaEdit.broj_fakture;
                 result.ukupno = fakturaEdit.ukupno;
-                result.datum_dokumenta = fakturaEdit.datum_dokumenta;
+                result.datum_dokumenta = (DateTime)(fakturaEdit.datum_dokumenta);
                 result.broj_dokumenta = fakturaEdit.broj_dokumenta;
                 _db.SaveChanges();
 
