@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Fakturisanje.Models.FakturaTable>
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>Lista faktura</h2>
+
+<p>
+    @Html.ActionLink("Kreiraj novu fakturu", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.datum_fakture)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.broj_fakture)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ukupno)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.datum_dokumenta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.broj_dokumenta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ukupno_stavki)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReturnDatumFaktureForDisplay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.broj_fakture)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ukupno)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReturnDatumDokumentaForDisplay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.broj_dokumenta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ukupno_stavki)
+        </td>
+        <td>
+            @Html.ActionLink("Izmeni fakturu", "Edit", new { id=item.fakturaID }) |
+            @Html.ActionLink("Obrisi fakturu", "Delete", new { id = item.fakturaID }) |
+            @Html.ActionLink("Kreiraj stavku", "CreateStavka", new { id = item.fakturaID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.fakturaID }) |
+            
+           
+        </td>
+    </tr>
+}
+
+</table>

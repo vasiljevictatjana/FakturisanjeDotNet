@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Fakturisanje.Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FakturaTable">
+          <Key>
+            <PropertyRef Name="fakturaID" />
+          </Key>
+          <Property Name="fakturaID" Type="int" Nullable="false" />
+          <Property Name="datum_fakture" Type="datetime" />
+          <Property Name="broj_fakture" Type="int" />
+          <Property Name="ukupno" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="datum_dokumenta" Type="datetime" Nullable="false" />
+          <Property Name="broj_dokumenta" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ukupno_stavki" Type="int" />
+        </EntityType>
+        <EntityType Name="StavkaFaktureTable">
+          <Key>
+            <PropertyRef Name="redniBr" />
+            <PropertyRef Name="fakturaID" />
+          </Key>
+          <Property Name="redniBr" Type="int" Nullable="false" />
+          <Property Name="fakturaID" Type="int" Nullable="false" />
+          <Property Name="kolicina" Type="int" Nullable="false" />
+          <Property Name="cena" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ukupno" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <Association Name="FK__StavkaFak__faktu__398D8EEE">
+          <End Role="FakturaTable" Type="Self.FakturaTable" Multiplicity="1" />
+          <End Role="StavkaFaktureTable" Type="Self.StavkaFaktureTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FakturaTable">
+              <PropertyRef Name="fakturaID" />
+            </Principal>
+            <Dependent Role="StavkaFaktureTable">
+              <PropertyRef Name="fakturaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FakturisanjeModelsStoreContainer">
+          <EntitySet Name="FakturaTable" EntityType="Self.FakturaTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StavkaFaktureTable" EntityType="Self.StavkaFaktureTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__StavkaFak__faktu__398D8EEE" Association="Self.FK__StavkaFak__faktu__398D8EEE">
+            <End Role="FakturaTable" EntitySet="FakturaTable" />
+            <End Role="StavkaFaktureTable" EntitySet="StavkaFaktureTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Fakturisanje.Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FakturaTable">
+          <Key>
+            <PropertyRef Name="fakturaID" />
+          </Key>
+          <Property Name="fakturaID" Type="Int32" Nullable="false" />
+          <Property Name="datum_fakture" Type="DateTime" Precision="3" />
+          <Property Name="broj_fakture" Type="Int32" />
+          <Property Name="ukupno" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="datum_dokumenta" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="broj_dokumenta" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ukupno_stavki" Type="Int32" />
+          <NavigationProperty Name="StavkaFaktureTables" Relationship="Self.FK__StavkaFak__faktu__398D8EEE" FromRole="FakturaTable" ToRole="StavkaFaktureTable" />
+        </EntityType>
+        <EntityType Name="StavkaFaktureTable">
+          <Key>
+            <PropertyRef Name="redniBr" />
+            <PropertyRef Name="fakturaID" />
+          </Key>
+          <Property Name="redniBr" Type="Int32" Nullable="false" />
+          <Property Name="fakturaID" Type="Int32" Nullable="false" />
+          <Property Name="kolicina" Type="Int32" Nullable="false" />
+          <Property Name="cena" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ukupno" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="FakturaTable" Relationship="Self.FK__StavkaFak__faktu__398D8EEE" FromRole="StavkaFaktureTable" ToRole="FakturaTable" />
+        </EntityType>
+        <Association Name="FK__StavkaFak__faktu__398D8EEE">
+          <End Role="FakturaTable" Type="Self.FakturaTable" Multiplicity="1" />
+          <End Role="StavkaFaktureTable" Type="Self.StavkaFaktureTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FakturaTable">
+              <PropertyRef Name="fakturaID" />
+            </Principal>
+            <Dependent Role="StavkaFaktureTable">
+              <PropertyRef Name="fakturaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FaktureDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FakturaTables" EntityType="Self.FakturaTable" />
+          <EntitySet Name="StavkaFaktureTables" EntityType="Self.StavkaFaktureTable" />
+          <AssociationSet Name="FK__StavkaFak__faktu__398D8EEE" Association="Self.FK__StavkaFak__faktu__398D8EEE">
+            <End Role="FakturaTable" EntitySet="FakturaTables" />
+            <End Role="StavkaFaktureTable" EntitySet="StavkaFaktureTables" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FakturisanjeModelsStoreContainer" CdmEntityContainer="FaktureDBEntities">
+          <EntitySetMapping Name="FakturaTables">
+            <EntityTypeMapping TypeName="Fakturisanje.Models.FakturaTable">
+              <MappingFragment StoreEntitySet="FakturaTable">
+                <ScalarProperty Name="fakturaID" ColumnName="fakturaID" />
+                <ScalarProperty Name="datum_fakture" ColumnName="datum_fakture" />
+                <ScalarProperty Name="broj_fakture" ColumnName="broj_fakture" />
+                <ScalarProperty Name="ukupno" ColumnName="ukupno" />
+                <ScalarProperty Name="datum_dokumenta" ColumnName="datum_dokumenta" />
+                <ScalarProperty Name="broj_dokumenta" ColumnName="broj_dokumenta" />
+                <ScalarProperty Name="ukupno_stavki" ColumnName="ukupno_stavki" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StavkaFaktureTables">
+            <EntityTypeMapping TypeName="Fakturisanje.Models.StavkaFaktureTable">
+              <MappingFragment StoreEntitySet="StavkaFaktureTable">
+                <ScalarProperty Name="redniBr" ColumnName="redniBr" />
+                <ScalarProperty Name="fakturaID" ColumnName="fakturaID" />
+                <ScalarProperty Name="kolicina" ColumnName="kolicina" />
+                <ScalarProperty Name="cena" ColumnName="cena" />
+                <ScalarProperty Name="ukupno" ColumnName="ukupno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
